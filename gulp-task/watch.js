@@ -1,9 +1,8 @@
 // require something
-module.exports = function(profile = "default") {
-  var cfg;
-  cfg = config["watch:" + profile];
-  return gulp.task(cfg.taskName, function() {
-    return cfg.opts.watchEntries.forEach(function({targets, actions}) {
+module.exports = (profile = "default") => {
+  const cfg = config["watch:" + profile];
+  return gulp.task(cfg.taskName, () => {
+    return cfg.opts.watchEntries.forEach(({targets, actions}) => {
       return gulp.watch(targets, actions);
     });
   });
