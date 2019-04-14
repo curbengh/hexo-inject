@@ -18,7 +18,7 @@
   "author": "AKFish <akfish@gmail.com> (http://catx.me)",
   "maintainers": [
     "Abner Chou <hi@abnerchou.me> (http://abnerchou.me)"
-    ],
+  ],
   "license": "MIT",
   "dependencies": {
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
