@@ -1,45 +1,37 @@
-var Block, InjectionBlock, Node, wrap;
-
-({
+const {
   default: Node,
   Block,
   InjectionBlock,
   wrap
-} = require('../src/parser/node'));
+} = require('../src/parser/node');
 
-describe('Node', function() {
-  var bar, baz, foo;
-  foo = wrap('test', 'foo');
-  bar = wrap('test', 'bar');
-  baz = wrap('test', 'baz');
-  it('Node::firstChild', function() {
-    var n;
-    n = new Node();
+describe('Node', () => {
+  const foo = wrap('test', 'foo');
+  const bar = wrap('test', 'bar');
+  const baz = wrap('test', 'baz');
+  it('Node::firstChild', () => {
+    const n = new Node();
     n.append(foo);
     n.append(bar);
     return n.firstChild.should.equal(foo);
   });
-  it('Node::firstChild - empty', function() {
-    var n;
-    n = new Node();
+  it('Node::firstChild - empty', () => {
+    const n = new Node();
     return expect(n.firstChild).to.be.null;
   });
-  it('Node::lastChild', function() {
-    var n;
-    n = new Node();
+  it('Node::lastChild', () => {
+    const n = new Node();
     n.append(foo);
     n.append(bar);
     return n.lastChild.should.equal(bar);
   });
-  it('Node::lastChild - empty', function() {
-    var n;
-    n = new Node();
+  it('Node::lastChild - empty', () => {
+    const n = new Node();
     return expect(n.lastChild).to.be.null;
   });
-  it('Block::injectBefore', function() {
-    var i, n;
-    n = new Block();
-    i = new InjectionBlock();
+  it('Block::injectBefore', () => {
+    const n = new Block();
+    const i = new InjectionBlock();
     i.append(foo);
     n.append(i);
     n.append(foo);
@@ -49,18 +41,16 @@ describe('Node', function() {
     n.firstChild.lastChild.should.deep.equal(wrap('injection_text', baz));
     return n.validate().should.be.true;
   });
-  it('Block::injectBefore - no injection block', function() {
-    var n;
-    n = new Block();
+  it('Block::injectBefore - no injection block', () => {
+    const n = new Block();
     n.injectBefore(baz);
     n.firstChild.type.should.equal('injection');
     n.firstChild.lastChild.should.deep.equal(wrap('injection_text', baz));
     return n.validate().should.be.true;
   });
-  it('Block::injectAfter', function() {
-    var i, n;
-    n = new Block();
-    i = new InjectionBlock();
+  it('Block::injectAfter', () => {
+    const n = new Block();
+    const i = new InjectionBlock();
     i.append(foo);
     n.append(foo);
     n.append(bar);
@@ -70,17 +60,15 @@ describe('Node', function() {
     n.lastChild.lastChild.should.deep.equal(wrap('injection_text', baz));
     return n.validate().should.be.true;
   });
-  it('Block::injectAfter - no injection block', function() {
-    var n;
-    n = new Block();
+  it('Block::injectAfter - no injection block', () => {
+    const n = new Block();
     n.injectAfter(baz);
     n.lastChild.type.should.equal('injection');
     n.lastChild.firstChild.should.deep.equal(wrap('injection_text', baz));
     return n.validate().should.be.true;
   });
-  it('InjectionBlock::injectBefore - ensure children uniqueness', function() {
-    var i;
-    i = new InjectionBlock();
+  it('InjectionBlock::injectBefore - ensure children uniqueness', () => {
+    const i = new InjectionBlock();
     i.injectBefore(foo);
     i.injectBefore(bar);
     i.injectBefore(foo);
@@ -88,9 +76,8 @@ describe('Node', function() {
     i.injectBefore(bar);
     return i.children.should.deep.equal([baz, bar, foo].map(wrap.bind(null, 'injection_text')));
   });
-  return it('InjectionBlock::injectAfter - ensure children uniqueness', function() {
-    var i;
-    i = new InjectionBlock();
+  return it('InjectionBlock::injectAfter - ensure children uniqueness', () => {
+    const i = new InjectionBlock();
     i.injectAfter(foo);
     i.injectAfter(bar);
     i.injectAfter(foo);

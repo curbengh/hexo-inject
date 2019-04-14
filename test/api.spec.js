@@ -1,16 +1,10 @@
-var API, INJECTION_POINTS, Inject, camalize, sinon;
+const Inject = require('../src/inject');
+const { INJECTION_POINTS, API } = require('../src/const');
+const { camalize } = require('../src/util');
+const sinon = require('sinon');
 
-Inject = require('../src/inject');
-
-({INJECTION_POINTS, API} = require('../src/const'));
-
-({camalize} = require('../src/util'));
-
-sinon = require('sinon');
-
-describe('API', function() {
-  var inject, mock_hexo;
-  mock_hexo = {
+describe('API', () => {
+  const mock_hexo = {
     extend: {
       filter: {
         register: sinon.stub()
@@ -21,46 +15,39 @@ describe('API', function() {
     },
     execFilter: sinon.stub()
   };
-  inject = null;
-  before(function() {
+  let inject = null;
+  before(() => {
     inject = new Inject(mock_hexo);
     return inject.register();
   });
-  describe('register', function() {
-    it('should expose API via `hexo.inject`', function() {
+  describe('register', () => {
+    it('should expose API via `hexo.inject`', () => {
       mock_hexo.extend.filter.register.calledWith('after_render:html').should.be.true;
       mock_hexo.extend.filter.register.calledWith('after_init').should.be.true;
       mock_hexo.extend.generator.register.calledWith('inject').should.be.true;
       return mock_hexo.inject.should.equal(inject);
     });
-    return it.skip('should execute `inject_ready` filter`', function() {
+    return it.skip('should execute `inject_ready` filter`', () => {
       return mock_hexo.execFilter.calledWith('inject_ready', inject, {
         context: mock_hexo
       }).should.be.true;
     });
   });
-  return describe('injection point', function() {
-    var should_expose_api;
-    before(function() {
-      API.forEach(function(i) {
-        return sinon.stub(inject, i);
-      });
+  return describe('injection point', () => {
+    before(() => {
+      API.forEach(i => sinon.stub(inject, i));
       return inject._initAPI();
     });
-    after(function() {
-      API.forEach(function(i) {
-        return inject[i].restore();
-      });
+    after(() => {
+      API.forEach(i => inject[i].restore());
       return inject._initAPI();
     });
-    should_expose_api = function(p) {
-      var injection_point;
-      injection_point = p;
-      return it(injection_point, function() {
-        var api;
-        api = inject[camalize(injection_point)];
+    const should_expose_api = p => {
+      const injection_point = p;
+      return it(injection_point, () => {
+        const api = inject[camalize(injection_point)];
         api.should.be.an('object');
-        return API.forEach(function(i) {
+        return API.forEach(i => {
           api[i].should.be.a('function');
           api[i]('foo', 'bar', 'barz').should.equal(api, 'API calls should be chainable');
           inject[i].calledOn(inject).should.be.true;
@@ -68,8 +55,6 @@ describe('API', function() {
         });
       });
     };
-    return INJECTION_POINTS.forEach(function(i) {
-      return should_expose_api(i);
-    });
+    return INJECTION_POINTS.forEach(i => should_expose_api(i));
   });
 });
