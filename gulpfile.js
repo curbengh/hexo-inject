@@ -1,9 +1,9 @@
 //< deps
-GLOBAL.gulp = require('gulp');
+global.gulp = require('gulp');
 
-GLOBAL.heap = require('gulp-heap');
+global.heap = require('gulp-heap');
 
-GLOBAL.config = require('./gulpconfig.json');
+global.config = require('./gulpconfig.json');
 
 //>
 //< tasks

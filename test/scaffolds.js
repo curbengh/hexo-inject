@@ -1,13 +1,13 @@
 require('babel-register');
 
-GLOBAL.Hexo = require('hexo');
+global.Hexo = require('hexo');
 
 // GLOBAL.fs = require('hexo-fs')
-GLOBAL.chai = require('chai');
+global.chai = require('chai');
 
-GLOBAL.expect = chai.expect;
+global.expect = chai.expect;
 
-GLOBAL.should = chai.should;
+global.should = chai.should;
 
 should();
 
