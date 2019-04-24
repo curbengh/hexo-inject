@@ -1,34 +1,47 @@
-const adapteType = (orig, v) => {
-  if (orig == null || typeof v !== 'string') {
-    return v;
+/**
+ * @param {any[]|string|number|boolean} orig 
+ * @param {string} value 
+ */
+const adapteType = (orig, value) => {
+  if (orig == null || typeof value !== 'string') {
+    return value;
   }
-  const t = typeof orig;
-  switch (t) {
+  if (Array.isArray(orig)) {
+    return value.split(',').map(v => v.trim());
+  }
+  const type = typeof orig;
+  switch (type) {
     case 'string':
-      return v;
+      return value;
     case 'number':
-      return parseFloat(v);
+      return parseFloat(value);
     case 'boolean':
-      return v.toLowerCase() === 'true';
-    case 'object':
-      if (Array.isArray(orig)) {
-        return v.split(',').map(v => v.trim());
-      }
+      return value.toLowerCase() === 'true';
+    default:
+      throw new Error(`Incompatable type: ${type} and string`);
   }
-  throw new Error(`Incompatable type: ${t} and string`);
 };
 
-const setValue = (o, k, v) => {
-  const keys = k.split('.');
-  const _k = keys.pop();
-  let p = o;
-  while (p && keys.length > 0) {
-    p = p[keys.shift()];
+/**
+ * @param {*} orig 
+ * @param {string} key 
+ * @param {*} value 
+ */
+const setValue = (orig, key, value) => {
+  if (orig == null) return;
+
+  const keys = key.split('.');
+  const lastKey = keys.pop();
+  const { length } = keys;
+
+  let pointer = orig;
+  for (let i = 0; i < length; i++) {
+    pointer = pointer[keys[i]];
+    if (pointer == null) return;
   }
-  if (p == null) return;
 
   try {
-    return p[_k] = adapteType(p[_k], v);
+    return pointer[lastKey] = adapteType(pointer[lastKey], value);
   } catch (error) {
     console.log(`Failed to set value. Reason: ${error}.`);
   }
