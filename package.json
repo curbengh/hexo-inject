@@ -12,7 +12,8 @@
     "test": "mocha test/**/*.spec.js",
     "es6": "babel src --out-dir lib",
     "clean": "rimraf lib",
-    "watch": "watch \"npm test\" src test"
+    "watch": "watch \"npm test\" src test",
+    "lint": "eslint src"
   },
   "keywords": [
     "hexo",
@@ -39,6 +40,8 @@
     "babel-register": "^6.5.2",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
+    "eslint": "^6.1.0",
+    "eslint-config-hexo": "^3.0.0",
     "hexo": "^3.2.0",
     "mocha": "^6.0.2",
     "npm-run-all": "^4.1.5",
