@@ -1,4 +1,5 @@
 'use strict';
+/* global hexo */
 const Inject = require('./inject');
 const patch = require('./patch');
 

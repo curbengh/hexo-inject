@@ -1,4 +1,4 @@
-require('babel-polyfill');
+'use strict';
 const _ = require('underscore');
 const Promise = require('bluebird');
 

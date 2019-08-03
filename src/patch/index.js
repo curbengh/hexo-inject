@@ -8,9 +8,11 @@ module.exports = function patch(hexo) {
   }
 
   let { log } = hexo;
+  // eslint-disable-next-line radix
   let [major, minor] = hexo.version.split('.').map((v) => parseInt(v));
   if (major === 3 && minor === 2) {
     log.info('[hexo-inject] installing hotfix for hexojs/hexo#1791');
+    // eslint-disable-next-line new-cap
     ViewPatch(requireSiteModule('hexo/lib/theme/view'));
   }
 };

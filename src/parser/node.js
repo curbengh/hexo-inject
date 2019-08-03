@@ -66,6 +66,7 @@ const Block = module.exports.Block = class Block extends Node {
   injectBefore(content) {
     let firstChild = this.firstChild;
     if (firstChild === null || firstChild.type !== 'injection') {
+      // eslint-disable-next-line no-use-before-define
       firstChild = new InjectionBlock();
       this.prepend(firstChild);
     }
@@ -74,6 +75,7 @@ const Block = module.exports.Block = class Block extends Node {
   injectAfter(content) {
     let lastChild = this.lastChild;
     if (lastChild === null || lastChild.type !== 'injection') {
+      // eslint-disable-next-line no-use-before-define
       lastChild = new InjectionBlock();
       this.append(lastChild);
     }
@@ -128,7 +130,7 @@ Block.TYPES = {
   'injection': InjectionBlock
 };
 
-const Document = module.exports.Document = class Document extends Node {
+module.exports.Document = class Document extends Node {
   constructor() {
     super('document');
   }

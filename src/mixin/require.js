@@ -1,4 +1,5 @@
 'use strict';
+/* eslint-disable require-atomic-updates */
 const { callsite } = require('../util');
 const _ = require('underscore');
 const path = require('path');

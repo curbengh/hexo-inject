@@ -81,12 +81,13 @@ module.exports = class Parser {
         case 'begin':
           stack.push(Block.make(t, token));
           break;
-        case 'end':
+        case 'end': {
           let block = stack.pop();
           if (block.type !== t) throw new SyntaxError(`No matching '${t}_begin'`);
           block.end = token;
           top().append(block);
           break;
+        }
         default:
           top().append(token);
       }

@@ -10,7 +10,6 @@ module.exports = class Loader {
     this._loaders[ext].push(loader);
   }
   async load(module, opts) {
-    let { render } = this.hexo;
     let content = opts.inline ? module.content : '';
     content = await Promise.reduce(this._loaders[module.ext] || [], (content, loader) => loader(content, opts), content);
     return content;
