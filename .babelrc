@@ -1,9 +1,8 @@
 {
   "presets": [["env", {
-    "targets": { "node": 4 }
+    "targets": { "node": 8 }
   }]],
   "plugins": [
-    "add-module-exports",
     ["transform-async-to-module-method", {
       "module": "bluebird",
       "method": "coroutine"
