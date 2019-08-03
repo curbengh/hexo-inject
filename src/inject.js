@@ -1,6 +1,5 @@
 'use strict';
 const _ = require('underscore');
-const { mixins } = require('core-decorators');
 const { Content, Register, Transform, Require } = require('./mixin');
 const { INJECTION_POINTS, API } = require('./const');
 const { camalize } = require('./util');
@@ -8,7 +7,6 @@ const Loader = require('./loader');
 const Router = require('./router');
 const registerBuiltInLoader = require('./loader/built-in');
 
-@mixins(Content, Register, Transform, Require)
 class Inject {
   constructor (hexo) {
     this.hexo = hexo
@@ -31,5 +29,7 @@ class Inject {
     })
   }
 }
+
+Object.assign(Inject.prototype, Content, Register, Transform, Require);
 
 module.exports = Inject;
