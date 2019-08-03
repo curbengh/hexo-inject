@@ -9,9 +9,9 @@ const Register = {
     filter.register('after_init', () => {
       hexo.log.debug('[hexo-inject] firing inject_ready');
       hexo.execFilter('inject_ready', this, { context: hexo });
-    })
+    });
     this.router.register();
   }
-}
+};
 
 module.exports = Register;

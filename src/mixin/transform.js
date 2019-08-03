@@ -5,54 +5,54 @@ const Parser = require('../parser');
 const { INJECTION_POINTS } = require('../const');
 
 const Transform = {
-  _transform (src, data) {
-    let { log } = this.hexo
+  _transform(src, data) {
+    let { log } = this.hexo;
     try {
-      let doc = Parser.get().parse(src)
-      if (!doc.isComplete) throw new Error('Incomplete document')
-      return this._doTransform(doc, src, data)
+      let doc = Parser.get().parse(src);
+      if (!doc.isComplete) throw new Error('Incomplete document');
+      return this._doTransform(doc, src, data);
     } catch (e) {
-      log.debug(`[hexo-inject] SKIP: ${data.source}`)
-      log.debug(e)
+      log.debug(`[hexo-inject] SKIP: ${data.source}`);
+      log.debug(e);
     }
-    return src
+    return src;
   },
-  async _doTransform (doc, src, data) {
-    let { log } = this.hexo
+  async _doTransform(doc, src, data) {
+    let { log } = this.hexo;
     try {
-      let injections = _.object(INJECTION_POINTS, INJECTION_POINTS.map(this._resolveInjectionPoint.bind(this, src)))
-      let resolved = await Promise.props(injections)
+      let injections = _.object(INJECTION_POINTS, INJECTION_POINTS.map(this._resolveInjectionPoint.bind(this, src)));
+      let resolved = await Promise.props(injections);
       resolved = _.mapObject(resolved, (value) => {
         return _.chain(value)
           .filter(({ shouldInject }) => shouldInject)
           .pluck('html')
-          .value()
-      })
+          .value();
+      });
 
-      doc.head.clearInjections()
-      doc.body.clearInjections()
+      doc.head.clearInjections();
+      doc.body.clearInjections();
 
-      doc.head.injectBefore(resolved['head_begin'])
-      doc.head.injectAfter(resolved['head_end'])
-      doc.body.injectBefore(resolved['body_begin'])
-      doc.body.injectAfter(resolved['body_end'])
+      doc.head.injectBefore(resolved.head_begin);
+      doc.head.injectAfter(resolved.head_end);
+      doc.body.injectBefore(resolved.body_begin);
+      doc.body.injectAfter(resolved.body_end);
 
       if (!doc.head.validate()) {
-        log.warn('[hexo-inject] rogue injection block detected in <head> section')
-        log.debug(doc.head.content)
+        log.warn('[hexo-inject] rogue injection block detected in <head> section');
+        log.debug(doc.head.content);
       }
       if (!doc.body.validate()) {
-        log.warn('[hexo-inject] rogue injection block detected in <body> section')
-        log.debug(doc.body.content)
+        log.warn('[hexo-inject] rogue injection block detected in <body> section');
+        log.debug(doc.body.content);
       }
 
-      src = doc.content
+      src = doc.content;
     } catch (e) {
-      log.error(`[hexo-inject] Error injecting: ${data.source}`)
-      log.error(e)
+      log.error(`[hexo-inject] Error injecting: ${data.source}`);
+      log.error(e);
     }
-    return src
+    return src;
   }
-}
+};
 
-module.exports = Transform
+module.exports = Transform;

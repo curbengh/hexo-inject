@@ -2,7 +2,7 @@
 const path = require('path');
 const Promise = require('bluebird');
 
-module.exports = function (View) {
+module.exports = function(View) {
   View.prototype._precompile = function() {
     var render = this._render;
     var ctx = render.context;
@@ -33,16 +33,16 @@ module.exports = function (View) {
         var result = compiled(locals);
         log.debug('[hexo-inject] patched execFilterSync("after_render")');
         result = ctx.execFilterSync.apply(ctx, buildFilterArguments(result));
-        return result
+        return result;
       };
 
-      this._compiled = (function(locals) {
+      this._compiled = function(locals) {
         return Promise.resolve(compiled(locals))
           .then(function(result) {
             log.debug('[hexo-inject] patched execFilter("after_render")');
             return ctx.execFilter.apply(ctx, buildFilterArguments(result));
           });
-      });
+      };
     } else {
       this._compiledSync = function(locals) {
         return render.renderSync(data, locals);
@@ -53,4 +53,4 @@ module.exports = function (View) {
       };
     }
   };
-}
+};
