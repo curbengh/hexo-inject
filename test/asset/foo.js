@@ -1,1 +1,1 @@
-var injected = true
+const injected = true;
