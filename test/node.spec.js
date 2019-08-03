@@ -1,5 +1,5 @@
 const {
-  default: Node,
+  Node,
   Block,
   InjectionBlock,
   wrap

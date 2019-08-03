@@ -1,15 +1,15 @@
-import _ from "underscore"
-import { mixins } from 'core-decorators'
-import { Content, Register, Transform, Require } from './mixin'
-import { INJECTION_POINTS, API } from './const'
-import { camalize } from './util'
-import Loader from './loader'
-import Router from './router'
-import registerBuiltInLoader from './loader/built-in'
-
+'use strict';
+const _ = require('underscore');
+const { mixins } = require('core-decorators');
+const { Content, Register, Transform, Require } = require('./mixin');
+const { INJECTION_POINTS, API } = require('./const');
+const { camalize } = require('./util');
+const Loader = require('./loader');
+const Router = require('./router');
+const registerBuiltInLoader = require('./loader/built-in');
 
 @mixins(Content, Register, Transform, Require)
-export default class Inject {
+class Inject {
   constructor (hexo) {
     this.hexo = hexo
     this.loader = new Loader(hexo)
@@ -31,3 +31,5 @@ export default class Inject {
     })
   }
 }
+
+module.exports = Inject;

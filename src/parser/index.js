@@ -1,8 +1,9 @@
-import { INJECTION_POINTS, REGEX } from '../const'
-import { Block, Document } from './node'
+'use strict';
+const { INJECTION_POINTS, REGEX } = require('../const');
+const { Block, Document } = require('./node');
 
 var parser = null
-export default class Parser {
+module.exports = class Parser {
   static get () {
     if (parser === null) parser = new Parser()
     return parser

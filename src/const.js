@@ -1,11 +1,12 @@
-export const INJECTION_POINTS = [
+'use strict';
+module.exports.INJECTION_POINTS = [
   'head_begin',
   'head_end',
   'body_begin',
   'body_end'
 ]
 
-export const REGEX = {
+module.exports.REGEX = {
   head_begin        : /(<head.*>[\n\r\s\t]*)/i,
   head_end          : /([\n\r\s\t]*<\/head>)/i,
   body_begin        : /(<body.*>[\n\r\s\t]*)/i,
@@ -15,7 +16,7 @@ export const REGEX = {
   stack_trace       : /\s+at(?:\s(\S*))?(?:\s\[as\s(\S*)\])?\s\(?(\S*?):(\d+):(\d+)\)?/
 }
 
-export const API = [
+module.exports.API = [
   'raw',
   'tag',
   'script',

@@ -1,7 +1,8 @@
-import path from 'path'
-import ViewPatch from './view'
+'use strict';
+const path = require('path');
+const ViewPatch = require('./view');
 
-export default function patch (hexo) {
+module.exports = function patch (hexo) {
   function requireSiteModule (m) {
     return require(path.join(hexo.base_dir, 'node_modules/', m))
   }

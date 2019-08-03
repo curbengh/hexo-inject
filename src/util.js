@@ -1,5 +1,6 @@
-import { INJECTION_POINTS, REGEX } from './const'
-import path from 'path'
+'use strict';
+const { INJECTION_POINTS, REGEX } = require('./const');
+const path = require('path');
 
 export function camalize (str) {
   return str.split('_')

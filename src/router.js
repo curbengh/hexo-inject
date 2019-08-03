@@ -1,4 +1,5 @@
-export default class Router {
+'use strict';
+module.exports = class Router {
   constructor (hexo) {
     this.hexo = hexo
     this._routes = []
@@ -13,4 +14,4 @@ export default class Router {
     this._routes.push({ path: src, data: () => content })
     return src
   }
-}
+};

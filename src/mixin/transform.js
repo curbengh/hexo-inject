@@ -1,7 +1,8 @@
-import Promise from 'bluebird'
-import _ from 'underscore'
-import Parser from '../parser'
-import { INJECTION_POINTS } from '../const'
+'use strict';
+const Promise = require('bluebird');
+const _ = require('underscore');
+const Parser = require('../parser');
+const { INJECTION_POINTS } = require('../const');
 
 const Transform = {
   _transform (src, data) {
@@ -54,4 +55,4 @@ const Transform = {
   }
 }
 
-export default Transform
+module.exports = Transform

@@ -1,6 +1,7 @@
-import { callsite } from '../util'
-import _ from 'underscore'
-import path from 'path'
+'use strict';
+const { callsite } = require('../util');
+const _ = require('underscore');
+const path = require('path');
 
 const DEFAULT_REQUIRE_OPTS = {
   inline: true,
@@ -51,4 +52,4 @@ const Require = {
   }
 }
 
-export default Require
+module.exports = Require

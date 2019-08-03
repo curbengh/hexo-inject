@@ -1,6 +1,6 @@
-import 'babel-polyfill'
-import _ from 'underscore'
-import Promise from 'bluebird'
+require('babel-polyfill');
+const _ = require('underscore');
+const Promise = require('bluebird');
 
 function resolve (o, ...args) {
   if (typeof o === 'function') return o(...args)
@@ -43,4 +43,4 @@ const Content = {
   }
 }
 
-export default Content
+module.exports = Content;

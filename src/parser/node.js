@@ -1,7 +1,8 @@
-import _ from 'underscore'
-import { createHash } from 'crypto'
+'use strict';
+const _ = require('underscore');
+const { createHash } = require('crypto');
 
-export function wrap (type, content) {
+const wrap = module.exports.wrap = function wrap (type, content) {
   // If content is another token, clone it and change the type
   if (_.isObject(content) && _.isString(content.type)) {
     content = _.clone(content)
@@ -15,7 +16,7 @@ export function wrap (type, content) {
   }
 }
 
-export default class Node {
+const Node = module.exports.Node = class Node {
   constructor (type) {
     this.type = type
     this.children = []
@@ -42,7 +43,7 @@ export default class Node {
   }
 }
 
-export class Block extends Node {
+const Block = module.exports.Block = class Block extends Node {
   static make (type, begin, end) {
     let T = Block.TYPES[type]
     return T ? new T(begin, end) : new Block(type, begin, end)
@@ -87,7 +88,7 @@ export class Block extends Node {
 
 const INJECTION_BEGIN = wrap('injection_begin', '<!-- hexo-inject:begin -->')
 const INJECTION_END   = wrap('injection_end'  , '<!-- hexo-inject:end -->')
-export class InjectionBlock extends Block {
+const InjectionBlock = module.exports.InjectionBlock = class InjectionBlock extends Block {
   constructor (begin = INJECTION_BEGIN, end = INJECTION_END) {
     super('injection', begin, end)
     this._contentHash = {}
@@ -127,7 +128,7 @@ Block.TYPES = {
   'injection': InjectionBlock
 }
 
-export class Document extends Node {
+const Document = module.exports.Document = class Document extends Node {
   constructor () {
     super('document')
   }

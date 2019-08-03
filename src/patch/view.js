@@ -1,7 +1,8 @@
-import path from 'path'
-import Promise from 'bluebird'
+'use strict';
+const path = require('path');
+const Promise = require('bluebird');
 
-export default function (View) {
+module.exports = function (View) {
   View.prototype._precompile = function() {
     var render = this._render;
     var ctx = render.context;

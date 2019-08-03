@@ -1,4 +1,5 @@
-export default function registerBuiltInLoader (loader) {
+'use strict';
+module.exports = function registerBuiltInLoader (loader) {
   loader.register('.js', (content, opts) => {
     return opts.inline
       ? `<script>${content}</script>`
