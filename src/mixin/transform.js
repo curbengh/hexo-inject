@@ -17,11 +17,11 @@ const Transform = {
     }
     return src;
   },
-  async _doTransform(doc, src, data) {
+  _doTransform: Promise.coroutine(function* (doc, src, data) {
     let { log } = this.hexo;
     try {
       let injections = _.object(INJECTION_POINTS, INJECTION_POINTS.map(this._resolveInjectionPoint.bind(this, src)));
-      let resolved = await Promise.props(injections);
+      let resolved = yield Promise.props(injections);
       resolved = _.mapObject(resolved, (value) => {
         return _.chain(value)
           .filter(({ shouldInject }) => shouldInject)
@@ -52,7 +52,7 @@ const Transform = {
       log.error(e);
     }
     return src;
-  }
+  })
 };
 
 module.exports = Transform;

@@ -31,7 +31,6 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
-    "babel-plugin-transform-async-to-module-method": "^6.7.0",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.5.2",
     "chai": "^4.2.0",

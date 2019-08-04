@@ -2,11 +2,5 @@
   "presets": [["env", {
     "targets": { "node": 8 }
   }]],
-  "plugins": [
-    ["transform-async-to-module-method", {
-      "module": "bluebird",
-      "method": "coroutine"
-    }]
-  ],
   "sourceMaps": "inline"
 }
