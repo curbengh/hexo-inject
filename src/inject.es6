@@ -1,5 +1,4 @@
 import _ from "underscore"
-import { mixins } from 'core-decorators'
 import { Content, Register, Transform, Require } from './mixin'
 import { INJECTION_POINTS, API } from './const'
 import { camalize } from './util'
@@ -7,8 +6,6 @@ import Loader from './loader'
 import Router from './router'
 import registerBuiltInLoader from './loader/built-in'
 
-
-@mixins(Content, Register, Transform, Require)
 export default class Inject {
   constructor (hexo) {
     this.hexo = hexo
@@ -31,3 +28,6 @@ export default class Inject {
     })
   }
 }
+
+Inject.prototype
+Object.assign(Inject.prototype, Content, Register, Transform, Require)
