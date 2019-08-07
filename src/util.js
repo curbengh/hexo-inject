@@ -31,3 +31,12 @@ module.exports.callsite = function callsite() {
 
   return stack;
 };
+
+module.exports.isRequireStack = function isRequireStack(stack) {
+  return (
+    stack.functionName === 'Object.require'
+    || (
+      stack.functionName === 'Object.args' && stack.alias === 'require'
+    )
+  );
+};

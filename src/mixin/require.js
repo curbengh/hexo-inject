@@ -1,5 +1,5 @@
 'use strict';
-const { callsite } = require('../util');
+const { callsite, isRequireStack } = require('../util');
 const _ = require('underscore');
 const path = require('path');
 const Promise = require('bluebird');
@@ -17,12 +17,12 @@ const Require = {
     // -> callsite
     // Called from inject.pos.require(...)
     //    Inject.require
-    //    Object.require
+    //    Object.require / Object.args [as require]
     // -> callsite
     let top = stack.shift();
     console.assert(top.functionName === 'Inject.require');
     top = stack.shift();
-    if (top.functionName === 'Object.require') top = stack.shift();
+    if (isRequireStack(top)) top = stack.shift();
     return top;
   },
   _resolveModule(cs, m) {
