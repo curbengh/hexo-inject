@@ -35,7 +35,7 @@ module.exports.callsite = function callsite() {
 module.exports.isRequireStack = function isRequireStack(stack) {
   return (
     stack.functionName === 'Object.require'
-    || (
+    || ( // For Node.js 8 and Node.js 10
       stack.functionName === 'Object.args' && stack.alias === 'require'
     )
   );
