@@ -17,9 +17,9 @@ class Inject {
   }
   _initAPI() {
     this._injectors = {};
-    INJECTION_POINTS.forEach((i) => {
+    INJECTION_POINTS.forEach(i => {
       this._injectors[i] = [];
-      let api = this[camalize(i)] = _.chain(this)
+      const api = this[camalize(i)] = _(this)
         .pick(API)
         .mapValues(fn => (...args) => {
           fn.call(this, i, ...args);

@@ -1,11 +1,12 @@
 'use strict';
-const _ = require('lodash');
+const isObject = require('lodash/isObject');
+const clone = require('lodash/clone');
 const { createHash } = require('crypto');
 
 const wrap = module.exports.wrap = function wrap(type, content) {
   // If content is another token, clone it and change the type
-  if (_.isObject(content) && typeof content.type === 'string') {
-    content = _.clone(content);
+  if (isObject(content) && typeof content.type === 'string') {
+    content = clone(content);
     content.type = type;
     return content;
   }
