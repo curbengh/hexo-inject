@@ -1,6 +1,6 @@
 const Inject = require('../src/inject');
 const Promise = require('bluebird');
-const _ = require('underscore');
+const _ = require('lodash');
 const sinon = require('sinon');
 
 describe('Content', () => {

@@ -1,5 +1,5 @@
 const Parser = require('../src/parser');
-const _ = require('underscore');
+const _ = require('lodash');
 
 describe("Parser", () => {
   const parser = Parser.get();
@@ -7,8 +7,8 @@ describe("Parser", () => {
   it("._tokenize", () => {
     const tokens = parser._tokenize(html);
     const content = '';
-    _.pluck(tokens, 'type').should.deep.equal(['text', 'head_begin', 'injection_begin', 'injection_text', 'injection_end', 'head_text', 'injection_begin', 'injection_text', 'injection_end', 'head_end', 'text', 'body_begin', 'injection_begin', 'injection_text', 'injection_end', 'body_text', 'injection_begin', 'injection_text', 'injection_end', 'body_end', 'text']);
-    return _.pluck(tokens, 'content').join('').should.equal(html);
+    _.map(tokens, 'type').should.deep.equal(['text', 'head_begin', 'injection_begin', 'injection_text', 'injection_end', 'head_text', 'injection_begin', 'injection_text', 'injection_end', 'head_end', 'text', 'body_begin', 'injection_begin', 'injection_text', 'injection_end', 'body_text', 'injection_begin', 'injection_text', 'injection_end', 'body_end', 'text']);
+    return _.map(tokens, 'content').join('').should.equal(html);
   });
   it(".parse", () => {
     const doc = parser.parse(html);

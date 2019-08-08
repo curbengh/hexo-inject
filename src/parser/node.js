@@ -1,10 +1,10 @@
 'use strict';
-const _ = require('underscore');
+const _ = require('lodash');
 const { createHash } = require('crypto');
 
 const wrap = module.exports.wrap = function wrap(type, content) {
   // If content is another token, clone it and change the type
-  if (_.isObject(content) && _.isString(content.type)) {
+  if (_.isObject(content) && typeof content.type === 'string') {
     content = _.clone(content);
     content.type = type;
     return content;
@@ -105,12 +105,12 @@ const InjectionBlock = module.exports.InjectionBlock = class InjectionBlock exte
     return true;
   }
   prepend(content) {
-    if (_.isArray(content)) return content.forEach(this.prepend.bind(this));
+    if (Array.isArray(content)) return content.forEach(this.prepend.bind(this));
     content = wrap('injection_text', content);
     if (this._ensureUniqueContent(content)) super.prepend(content);
   }
   append(content) {
-    if (_.isArray(content)) return content.forEach(this.append.bind(this));
+    if (Array.isArray(content)) return content.forEach(this.append.bind(this));
     content = wrap('injection_text', content);
     if (this._ensureUniqueContent(content)) super.append(content);
   }

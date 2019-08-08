@@ -1,5 +1,5 @@
 'use strict';
-const _ = require('underscore');
+const _ = require('lodash');
 const Promise = require('bluebird');
 
 function resolve(o, ...args) {
@@ -19,7 +19,7 @@ const Content = {
   },
   _buildHTMLTag: Promise.coroutine(function* (name, attrs, content, endTag, src) {
     [attrs, content] = yield Promise.all([
-      Promise.props(_.mapObject(attrs, (value) => resolve(value, src))),
+      Promise.props(_.mapValues(attrs, value => resolve(value, src))),
       resolve(content || '', src)
     ]);
     let attr_list = _.map(attrs, (value, key) => `${key}='${value}'`).join(' ');

@@ -23,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "^3.3.4",
-    "underscore": "^1.8.3"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -36,6 +36,9 @@
     "sinon": "^7.1.1",
     "watch": "^1.0.2"
   },
+  "files": [
+    "src"
+  ],
   "engines": {
     "node": ">=8"
   }

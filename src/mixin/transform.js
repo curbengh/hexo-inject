@@ -1,6 +1,6 @@
 'use strict';
 const Promise = require('bluebird');
-const _ = require('underscore');
+const _ = require('lodash');
 const Parser = require('../parser');
 const { INJECTION_POINTS } = require('../const');
 
@@ -20,12 +20,12 @@ const Transform = {
   _doTransform: Promise.coroutine(function* (doc, src, data) {
     let { log } = this.hexo;
     try {
-      let injections = _.object(INJECTION_POINTS, INJECTION_POINTS.map(this._resolveInjectionPoint.bind(this, src)));
+      let injections = _.zipObjectDeep(INJECTION_POINTS, INJECTION_POINTS.map(this._resolveInjectionPoint.bind(this, src)));
       let resolved = yield Promise.props(injections);
-      resolved = _.mapObject(resolved, (value) => {
+      resolved = _.mapValues(resolved, (value) => {
         return _.chain(value)
           .filter(({ shouldInject }) => shouldInject)
-          .pluck('html')
+          .map('html')
           .value();
       });
 
