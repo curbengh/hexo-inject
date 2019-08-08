@@ -1,7 +1,6 @@
 'use strict';
 const { callsite, isRequireStack } = require('../util');
-const _ = require('underscore');
-const path = require('path');
+const { resolve, parse } = require('path');
 const Promise = require('bluebird');
 
 const DEFAULT_REQUIRE_OPTS = {
@@ -26,8 +25,8 @@ const Require = {
     return top;
   },
   _resolveModule(cs, m) {
-    let filePath = path.resolve(cs.file.dir, m);
-    let module = path.parse(filePath);
+    const filePath = resolve(cs.file.dir, m);
+    const module = parse(filePath);
     module.filePath = filePath;
     return module;
   },
@@ -63,7 +62,7 @@ const Require = {
   require(pos, m, opts) {
     let cs = this._resolveCallSite(callsite());
     let module = this._resolveModule(cs, m);
-    this.raw(pos, this._loadModule(module, opts), _.defaults({}, opts, DEFAULT_REQUIRE_OPTS));
+    this.raw(pos, this._loadModule(module, opts), Object.assign({}, DEFAULT_REQUIRE_OPTS, opts));
   }
 };
 

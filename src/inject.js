@@ -1,5 +1,5 @@
 'use strict';
-const _ = require('underscore');
+const _ = require('lodash');
 const { Content, Register, Transform, Require } = require('./mixin');
 const { INJECTION_POINTS, API } = require('./const');
 const { camalize } = require('./util');
@@ -17,11 +17,11 @@ class Inject {
   }
   _initAPI() {
     this._injectors = {};
-    INJECTION_POINTS.forEach((i) => {
+    INJECTION_POINTS.forEach(i => {
       this._injectors[i] = [];
-      let api = this[camalize(i)] = _.chain(this)
+      const api = this[camalize(i)] = _(this)
         .pick(API)
-        .mapObject((fn) => (...args) => {
+        .mapValues(fn => (...args) => {
           fn.call(this, i, ...args);
           return api;
         })

@@ -1,6 +1,6 @@
 const Inject = require('../src/inject');
 const Promise = require('bluebird');
-const _ = require('underscore');
+const omit = require('lodash/omit');
 const sinon = require('sinon');
 
 describe('Content', () => {
@@ -85,7 +85,7 @@ describe('Content', () => {
         html: content.html,
         shouldInject: false
       });
-      return inject._resolveContent(src, _.omit(content, 'opts')).should.eventually.deep.equal({
+      return inject._resolveContent(src, omit(content, 'opts')).should.eventually.deep.equal({
         html: content.html,
         shouldInject: true
       });

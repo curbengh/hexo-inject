@@ -1,5 +1,6 @@
 'use strict';
-const _ = require('underscore');
+const map = require('lodash/map');
+const mapValues = require('lodash/mapValues');
 const Promise = require('bluebird');
 
 function resolve(o, ...args) {
@@ -8,23 +9,21 @@ function resolve(o, ...args) {
 }
 
 const Content = {
-  _resolveContent(src, { html, opts }) {
-    opts = opts || { shouldInject: true };
+  _resolveContent(src, { html, opts = { shouldInject: true } }) {
     html = resolve(html, src);
-    let shouldInject = resolve(opts.shouldInject, src);
+    const shouldInject = resolve(opts.shouldInject, src);
     return Promise.props({ html, shouldInject });
   },
   _resolveInjectionPoint(src, pos) {
     return Promise.map(this._injectors[pos], this._resolveContent.bind(this, src));
   },
-  _buildHTMLTag: Promise.coroutine(function* (name, attrs, content, endTag, src) {
+  _buildHTMLTag: Promise.coroutine(function* (name, attrs, content = '', endTag, src) {
     [attrs, content] = yield Promise.all([
-      Promise.props(_.mapObject(attrs, (value) => resolve(value, src))),
-      resolve(content || '', src)
+      Promise.props(mapValues(attrs, value => resolve(value, src))),
+      resolve(content, src)
     ]);
-    let attr_list = _.map(attrs, (value, key) => `${key}='${value}'`).join(' ');
-    let html = `<${name} ${attr_list}>${endTag ? `${content}</${name}>` : ''}`;
-    return html;
+    const attr_list = map(attrs, (value, key) => `${key}='${value}'`).join(' ');
+    return `<${name} ${attr_list}>${endTag ? `${content}</${name}>` : ''}`;
   }),
   raw(pos, html, opts) {
     this._injectors[pos].push({ html, opts });
