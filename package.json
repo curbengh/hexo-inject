@@ -2,17 +2,15 @@
   "name": "hexo-inject",
   "version": "1.1.1",
   "description": "Dynamic script & style (and more) injection for Hexo",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/akfish/hexo-inject.git"
   },
   "scripts": {
-    "prepublish": "run-s clean es6",
     "test": "mocha test/**/*.spec.js",
-    "es6": "babel src --out-dir lib",
-    "clean": "rimraf lib",
-    "watch": "watch \"npm test\" src test"
+    "watch": "watch \"npm test\" src test",
+    "lint": "eslint src"
   },
   "keywords": [
     "hexo",
@@ -28,23 +26,17 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-add-module-exports": "^1.0.0",
-    "babel-plugin-transform-async-to-module-method": "^6.7.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.5.2",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
+    "eslint": "^6.1.0",
+    "eslint-config-hexo": "^3.0.0",
     "hexo": "^3.2.0",
     "mocha": "^6.0.2",
     "npm-run-all": "^4.1.5",
-    "rimraf": "^2.6.3",
     "sinon": "^7.1.1",
     "watch": "^1.0.2"
   },
   "engines": {
-    "node": ">=8.6.0"
+    "node": ">=8"
   }
 }
