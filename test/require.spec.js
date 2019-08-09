@@ -1,3 +1,5 @@
+'use strict';
+/* global Hexo */
 const Inject = require('../src/inject');
 const sinon = require('sinon');
 const path = require('path');
@@ -96,7 +98,7 @@ describe('Require', () => {
     });
   });
   return describe('serve', () => {
-    beforeEach(() => inject.router._routes = []);
+    beforeEach(() => { inject.router._routes = []; });
     it('should serve when opts.inline == false', () => {
       const m = mock_module(swig_asset);
       return inject._loadModule(m, {
