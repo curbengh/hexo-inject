@@ -2,8 +2,8 @@
 
 const Register = {
   register() {
-    let { hexo } = this;
-    let { filter } = hexo.extend;
+    const { hexo } = this;
+    const { filter } = hexo.extend;
     hexo.inject = this;
     filter.register('after_render:html', this._transform.bind(this));
     filter.register('after_init', () => {

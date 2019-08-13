@@ -1,4 +1,6 @@
 'use strict';
+
+require('chai').use(require('chai-as-promised')).should();
 const Inject = require('../src/inject');
 const sinon = require('sinon');
 const Parser = require('../src/parser');
@@ -19,19 +21,19 @@ describe('Transform', () => {
     inject.headBegin.link({ src: 'foo/style.css' });
     inject.headEnd.script({ src: 'foo/head-script.js' });
     inject.bodyBegin.tag('h1', { class: 'foo-h1' }, 'heading', true);
-    return inject.bodyEnd.script({ type: 'test/foo' }, 'this is in body');
+    inject.bodyEnd.script({ type: 'test/foo' }, 'this is in body');
   });
   it('should transform complete HTML', () => {
-    return inject._transform(html, { source: 'test' }).should.eventually.equal(injected);
+    return inject._transform(html, { source: 'test' }).should.become(injected);
   });
   it('should not transform incomplete HTML', () => {
     inject._transform(partial, { source: 'test-partial' }).should.equal(partial);
     mock_hexo.log.debug.calledTwice.should.be.true;
-    return mock_hexo.log.debug.calledWithMatch('[hexo-inject] SKIP: test-partial').should.be.true;
+    mock_hexo.log.debug.calledWithMatch('[hexo-inject] SKIP: test-partial').should.be.true;
   });
-  return it('should overwrite existing injeciton blocks', () => {
+  it('should overwrite existing injeciton blocks', () => {
     // eslint-disable-next-line no-unused-vars
     const parser = new Parser();
-    return inject._transform(injected, { source: 'test' }).should.eventually.equal(injected);
+    return inject._transform(injected, { source: 'test' }).should.become(injected);
   });
 });

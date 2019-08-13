@@ -2,29 +2,27 @@
 const { INJECTION_POINTS, REGEX } = require('../const');
 const { Block, Document } = require('./node');
 
-var parser = null;
+let parser = null;
 module.exports = class Parser {
   static get() {
     if (parser === null) parser = new Parser();
     return parser;
   }
-  _parseRules(src, ruleNames, defaultType = 'text') {
-    ruleNames = ruleNames || INJECTION_POINTS;
-    let rules = ruleNames.map((i) => REGEX[i]);
+  _parseRules(src, ruleNames = INJECTION_POINTS, defaultType = 'text') {
+    const rules = ruleNames.map(i => REGEX[i]);
 
     let delta = 0;
     let { tokens, text } = rules.reduce((context, r, i) => {
-      let ruleName = ruleNames[i];
-      let [rule, pos] = ruleName.split('_');
-      let isEnd = pos === 'end';
-      let m = r.exec(context.text);
+      const ruleName = ruleNames[i];
+      const [rule, pos] = ruleName.split('_');
+      const isEnd = pos === 'end';
+      const m = r.exec(context.text);
       if (m) {
         delta++;
-        let tag = m[1];
-        let offset = m.index;
-        let before = context.text.substr(0, offset);
-        let remain = context.text.substr(offset + tag.length);
-        context.text = remain;
+        const tag = m[1];
+        const offset = m.index;
+        const before = context.text.substr(0, offset);
+        context.text = context.text.substr(offset + tag.length);
         if (before !== '') {
           context.tokens.push({
             type: isEnd ? `${rule}_text` : defaultType,
@@ -52,37 +50,35 @@ module.exports = class Parser {
     return tokens;
   }
   _tokenize(src) {
-    let tokens = this._parseRules(src);
-
+    const tokens = this._parseRules(src);
     const INJECTION_REGION = ['injection_begin', 'injection_end'];
 
-    let headIndex = tokens.findIndex((t) => t.type === 'head_text');
+    const headIndex = tokens.findIndex(t => t.type === 'head_text');
     this._expandToken(tokens, headIndex, INJECTION_REGION);
 
-    let bodyIndex = tokens.findIndex((t) => t.type === 'body_text');
+    const bodyIndex = tokens.findIndex(t => t.type === 'body_text');
     this._expandToken(tokens, bodyIndex, INJECTION_REGION);
 
     return tokens;
   }
   _expandToken(tokens, index, ruleNames) {
     if (index < 0) return;
-    let token = tokens[index];
+    const token = tokens[index];
     tokens.splice(index, 1, ...this._parseRules(token.content, ruleNames, token.type));
   }
   _reduceBlock(tokens) {
-    let root = new Document();
-    let stack = [root];
+    const root = new Document();
+    const stack = [root];
+    const top = () => stack[stack.length - 1];
 
-    function top() { return stack[stack.length - 1]; }
-
-    tokens.forEach((token) => {
-      let [t, p] = token.type.split('_');
+    tokens.forEach(token => {
+      const [t, p] = token.type.split('_');
       switch (p) {
         case 'begin':
           stack.push(Block.make(t, token));
           break;
         case 'end': {
-          let block = stack.pop();
+          const block = stack.pop();
           if (block.type !== t) throw new SyntaxError(`No matching '${t}_begin'`);
           block.end = token;
           top().append(block);
@@ -98,9 +94,8 @@ module.exports = class Parser {
     return root;
   }
   parse(src) {
-    let tokens = this._tokenize(src);
-
-    let doc = this._reduceBlock(tokens);
+    const tokens = this._tokenize(src);
+    const doc = this._reduceBlock(tokens);
 
     return doc;
   }

@@ -1,5 +1,6 @@
 'use strict';
-/* global expect */
+
+require('chai').should();
 const Parser = require('../src/parser');
 const map = require('lodash/map');
 
@@ -9,19 +10,19 @@ describe('Parser', () => {
   it('._tokenize', () => {
     const tokens = parser._tokenize(html);
     map(tokens, 'type').should.deep.equal(['text', 'head_begin', 'injection_begin', 'injection_text', 'injection_end', 'head_text', 'injection_begin', 'injection_text', 'injection_end', 'head_end', 'text', 'body_begin', 'injection_begin', 'injection_text', 'injection_end', 'body_text', 'injection_begin', 'injection_text', 'injection_end', 'body_end', 'text']);
-    return map(tokens, 'content').join('').should.equal(html);
+    map(tokens, 'content').join('').should.equal(html);
   });
   it('.parse', () => {
     const doc = parser.parse(html);
     doc.content.should.equal(html);
     doc.head.should.be.an('object');
     doc.body.should.be.an('object');
-    return doc.isComplete.should.be.true;
+    doc.isComplete.should.be.true;
   });
   it('.parse - missing begin token', () => {
-    return expect(() => parser.parse('</body>')).to.throw(SyntaxError, 'No matching \'body_begin\'');
+    (() => parser.parse('</body>')).should.to.throw(SyntaxError, 'No matching \'body_begin\'');
   });
-  return it('.parse - missing end token', () => {
-    return expect(() => parser.parse('<body>')).to.throw(SyntaxError, 'No matching \'body_end\'');
+  it('.parse - missing end token', () => {
+    (() => parser.parse('<body>')).should.to.throw(SyntaxError, 'No matching \'body_end\'');
   });
 });
