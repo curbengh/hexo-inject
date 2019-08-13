@@ -1,5 +1,6 @@
 'use strict';
-/* global expect */
+
+const should = require('chai').use(require('chai-as-promised')).should();
 const Inject = require('../src/inject');
 const Promise = require('bluebird');
 const omit = require('lodash/omit');
@@ -19,8 +20,8 @@ describe('Content', () => {
       const [, html, opts] = inject.raw.getCall(0).args;
 
       html.should.be.a('function');
-      expect(opts).to.be.undefined;
-      return html().should.eventually.equal(expected);
+      should.equal(opts, undefined);
+      return html().should.become(expected);
     };
 
     it('tag', () => {
@@ -55,9 +56,9 @@ describe('Content', () => {
         },
         'data-bar': Promise.resolve('bar').delay(1000)
       };
-      return inject._buildHTMLTag('link', css_attrs, null, false, src).should.eventually.equal('<link src=\'/foo/bar.css\' data-foo=\'foo\' data-bar=\'bar\'>');
+      return inject._buildHTMLTag('link', css_attrs, null, false, src).should.become('<link src=\'/foo/bar.css\' data-foo=\'foo\' data-bar=\'bar\'>');
     });
-    return it('._buildHTMLTag - script', () => {
+    it('._buildHTMLTag - script', () => {
       const js_attrs = {
         type: 'text/foo-config',
         'data-foo': function(s) {
@@ -71,10 +72,10 @@ describe('Content', () => {
         s.should.equal(src);
         return content;
       };
-      return inject._buildHTMLTag('script', js_attrs, getContent, true, src).should.eventually.equal(`<script type='text/foo-config' data-foo='foo' data-bar='bar'>${content}</script>`);
+      return inject._buildHTMLTag('script', js_attrs, getContent, true, src).should.become(`<script type='text/foo-config' data-foo='foo' data-bar='bar'>${content}</script>`);
     });
   });
-  return describe('resolve', () => {
+  describe('resolve', () => {
     const src = 'foo bar baz';
     it('sync', () => {
       const content = {
@@ -83,11 +84,11 @@ describe('Content', () => {
           shouldInject: false
         }
       };
-      inject._resolveContent(src, content).should.eventually.deep.equal({
+      inject._resolveContent(src, content).should.become({
         html: content.html,
         shouldInject: false
       });
-      return inject._resolveContent(src, omit(content, 'opts')).should.eventually.deep.equal({
+      return inject._resolveContent(src, omit(content, 'opts')).should.become({
         html: content.html,
         shouldInject: true
       });
@@ -105,19 +106,19 @@ describe('Content', () => {
           }
         }
       };
-      return inject._resolveContent(src, content).should.eventually.deep.equal({
+      return inject._resolveContent(src, content).should.become({
         html: 'html content',
         shouldInject: false
       });
     });
-    return it('async - promise', () => {
+    it('async - promise', () => {
       const content = {
         html: Promise.resolve('html content').delay(1000),
         opts: {
           shouldInject: Promise.resolve(false).delay(300)
         }
       };
-      return inject._resolveContent(src, content).should.eventually.deep.equal({
+      return inject._resolveContent(src, content).should.become({
         html: 'html content',
         shouldInject: false
       });
