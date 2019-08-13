@@ -7,9 +7,9 @@ const { INJECTION_POINTS } = require('../const');
 
 const Transform = {
   _transform(src, data) {
-    let { log } = this.hexo;
+    const { log } = this.hexo;
     try {
-      let doc = Parser.get().parse(src);
+      const doc = Parser.get().parse(src);
       if (!doc.isComplete) throw new Error('Incomplete document');
       return this._doTransform(doc, src, data);
     } catch (e) {
@@ -19,9 +19,9 @@ const Transform = {
     return src;
   },
   _doTransform: Promise.coroutine(function* (doc, src, data) {
-    let { log } = this.hexo;
+    const { log } = this.hexo;
     try {
-      let injections = zipObject(INJECTION_POINTS, INJECTION_POINTS.map(this._resolveInjectionPoint.bind(this, src)));
+      const injections = zipObject(INJECTION_POINTS, INJECTION_POINTS.map(this._resolveInjectionPoint.bind(this, src)));
       let resolved = yield Promise.props(injections);
       resolved = mapValues(resolved, value => {
         return _(value)

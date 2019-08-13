@@ -31,7 +31,7 @@ const Require = {
     return module;
   },
   _loadModule: Promise.coroutine(function* (module, opts) {
-    let { render } = this.hexo;
+    const { render } = this.hexo;
     module.ext = `.${render.getOutput(module.ext)}` || module.ext;
 
     let content;
@@ -60,8 +60,8 @@ const Require = {
     /* eslint-enable require-atomic-updates */
   }),
   require(pos, m, opts) {
-    let cs = this._resolveCallSite(callsite());
-    let module = this._resolveModule(cs, m);
+    const cs = this._resolveCallSite(callsite());
+    const module = this._resolveModule(cs, m);
     this.raw(pos, this._loadModule(module, opts), Object.assign({}, DEFAULT_REQUIRE_OPTS, opts));
   }
 };

@@ -7,9 +7,8 @@ module.exports = function patch(hexo) {
     return require(path.join(hexo.base_dir, 'node_modules/', m));
   }
 
-  let { log } = hexo;
-  // eslint-disable-next-line radix
-  let [major, minor] = hexo.version.split('.').map((v) => parseInt(v));
+  const { log } = hexo;
+  const [major, minor] = hexo.version.split('.').map(v => parseInt(v, 10));
   if (major === 3 && minor === 2) {
     log.info('[hexo-inject] installing hotfix for hexojs/hexo#1791');
     // eslint-disable-next-line new-cap

@@ -5,12 +5,12 @@ module.exports = class Router {
     this._routes = [];
   }
   register() {
-    let { generator } = this.hexo.extend;
-    generator.register('inject', (locals) => this._routes);
+    const { generator } = this.hexo.extend;
+    generator.register('inject', locals => this._routes);
   }
   serve(module, opts) {
-    let src = opts.src || `/injected/${module.name}${module.ext}`;
-    let content = module.content;
+    const src = opts.src || `/injected/${module.name}${module.ext}`;
+    const { content } = module;
     this._routes.push({ path: src, data: () => content });
     return src;
   }
